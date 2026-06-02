@@ -34,12 +34,12 @@ function authRole(role) {
 }
 
 app.use('/reg', (req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:5001/reg' });
+    proxy.web(req, res, { target: `http://${process.env.REG_AUTH_IP}:5001/reg` });
 });
 
 //REDIRECT TO THE STUDENT MICROSERVICE
 app.use('/student',authToken, authRole('student'), (req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:3000' });
+    proxy.web(req, res, { target: `http://${process.env.STUDENT_SERVICE_IP}:3000` });
 })
 /*
 {
@@ -52,7 +52,7 @@ app.use('/student',authToken, authRole('student'), (req, res) => {
 
 //REDIRECT TO THE TEACHER MICROSERVICE
 app.use('/teacher', authToken, authRole('teacher'),(req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:3001' });
+    proxy.web(req, res, { target: `http://${process.env.TEACHER_SERVICE_IP}:3001` });
 })
 /*
 {
@@ -63,7 +63,7 @@ app.use('/teacher', authToken, authRole('teacher'),(req, res) => {
 */
 //REDIRECT TO THE LOGIN(Authentication) MICROSERVICE
 app.use('/auth', (req, res) => {
-    proxy.web(req, res, { target: 'http://localhost:5002' });
+    proxy.web(req, res, { target: `http://${process.env.REG_AUTH_IP}:5002` });
 })
 
 app.listen(port, () => {
