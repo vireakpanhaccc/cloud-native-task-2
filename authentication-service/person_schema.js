@@ -4,8 +4,8 @@ const PersonSchema = schema_mongoose.Schema(
     {
        id: {type: Number},
        name: { type: String },
-       emailid: { type: String },
-       pass: { type: String },
+       email: { type: String },
+       password: { type: String },
        mobile: { type: Number },
        role: { type: String }
     }, 

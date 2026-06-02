@@ -8,7 +8,7 @@ const proxy = httpProxy.createProxyServer();
 
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const JWT_SECRETE = process.env.JWT_SECRETE;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 function authToken(req, res, next) {
     console.log(req.headers.authorization)
@@ -17,7 +17,7 @@ function authToken(req, res, next) {
 
     if (token == null) return res.status(401).json("Please send token");
 
-    jwt.verify(token, JWT_SECRETE, (err, user) => {
+    jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) return res.status(403).json("Invalid token", err);
         req.user = user;
         next()
@@ -33,9 +33,12 @@ function authRole(role) {
     }
 }
 
+app.use('/reg', (req, res) => {
+    proxy.web(req, res, { target: 'http://localhost:5001/reg' });
+});
+
 //REDIRECT TO THE STUDENT MICROSERVICE
 app.use('/student',authToken, authRole('student'), (req, res) => {
-    console.log("INSIDE API GATEWAY STUDENT ROUTE")
     proxy.web(req, res, { target: 'http://localhost:3000' });
 })
 /*
@@ -49,7 +52,6 @@ app.use('/student',authToken, authRole('student'), (req, res) => {
 
 //REDIRECT TO THE TEACHER MICROSERVICE
 app.use('/teacher', authToken, authRole('teacher'),(req, res) => {
-    console.log("INSIDE API GATEWAY TEACHER ROUTE")
     proxy.web(req, res, { target: 'http://localhost:3001' });
 })
 /*

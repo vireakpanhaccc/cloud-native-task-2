@@ -3,11 +3,12 @@ const app = express()
 const port = 3000
 
 app.use(express.json())
-app.post("/studentlogin", (req,res) => {
-    const { username, password } = req.body
+app.post("/submitassignment", (req,res) => {
+    const { assignment, content } = req.body
     res.json({
-        message: `Student "${username}" logged in`,
-        username
+        message: `Assignment "${assignment}" submitted successfully`,
+        assignment,
+        content
     })
 })
 
@@ -20,11 +21,11 @@ app.get("/viewassignment", (req, res) => {
         }
     })
 })
-app.put("/studentupdateprofile", (req, res) => {
-    const { username, password } = req.body
+app.put("/updateprofile", (req, res) => {
+    const { name, password } = req.body
     res.json({
-        message: `Student "${username}" profile updated`,
-        username
+        message: `Student "${name}" profile updated`,
+        name
     })
 })
 

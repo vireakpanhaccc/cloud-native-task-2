@@ -15,7 +15,7 @@ In the postman use the following URL
 localhost:${port}/reg
 
 {
-  "firstname":"Joe",
+  "name":"Joe",
   "email":"a@gmail.com",
   "password":"abc",
   "mobile": 12345678,
@@ -37,9 +37,9 @@ app.post('/reg', (req, res) => {
     .then(hashedPassword => {
       const pobj = new PersonModel({
         id: uniqueid(1000, 9999),
-        name: req.body.firstname,
-        emailid: req.body.email,
-        pass: hashedPassword,
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword,
         mobile: req.body.mobile,
         role: req.body.role
       });//CLOSE PersonModel

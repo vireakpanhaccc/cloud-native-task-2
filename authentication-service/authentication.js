@@ -10,7 +10,7 @@ require('dotenv').config();
 
 app.use(express.json())
 
-const JWT_SECRETE = process.env.JWT_SECRETE
+const JWT_SECRET = process.env.JWT_SECRET
 
 /*
 In the postman use the following URL
@@ -30,14 +30,14 @@ app.post("/login", (req, res) => {
   console.log(req.body.password)
   console.log(req.body.role)
 
-  PersonModel.findOne({ "emailid": req.body.email, "role" : req.body.role})
+  PersonModel.findOne({ "email": req.body.email, "role" : req.body.role})
     .then(getsearchdocument => {
       console.log(getsearchdocument)
       if (getsearchdocument) {
-        bcrypt.compare(req.body.password, getsearchdocument.pass)
+        bcrypt.compare(req.body.password, getsearchdocument.password)
           .then(result => {
             if (result) {
-              const token = jwt.sign({ email: req.body.email, role: req.body.role }, JWT_SECRETE, { expiresIn: '24h' })
+              const token = jwt.sign({ email: req.body.email, role: req.body.role }, JWT_SECRET, { expiresIn: '24h' })
               return res.json({ token })
             }
             else {
